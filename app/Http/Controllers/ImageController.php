@@ -2,37 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\InterventionService;
-use Illuminate\Http\JsonResponse;
+use App\Services\HttpService;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
     /**
-     * @var InterventionService
+     * @var HttpService
      */
     private $interventionService;
 
     /**
      * ImageController constructor.
-     * @param InterventionService $interventionService
+     * @param HttpService $httpService
      */
-    public function __construct(InterventionService $interventionService)
+    public function __construct(HttpService $httpService)
     {
-        $this->interventionService = $interventionService;
+        $this->interventionService = $httpService;
     }
 
-    public function index() {
-        $images = $this->interventionService->getImages();
+    public function __invoke(Request $request): array
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:png',
+        ]);
 
-        return response()->json($images);
-    }
+        if ($request->file('image')->isValid()) {
+            $encodedImage = base64_encode(file_get_contents($request->file('image')));
 
-    public function store(Request $request) {
-        $imageUrl = $request->input('image_url');
+            $imageUrl = $this->interventionService->postImage($encodedImage);
 
-        $this->interventionService->postImage($imageUrl);
+            return compact('imageUrl');
 
-        return response()->json('ok');
+        }
     }
 }

@@ -4,7 +4,8 @@
             <h1>Upload images</h1>
             <div class="dropbox">
                 <input type="file" :name="uploadFieldName" :disabled="isSaving"
-                       accept="image/*" class="input-file">
+                       @change="uploadImages($event)"
+                       accept="image/*">
                 <p v-if="isInitial">
                     Drag your file(s) here to begin<br> or click to browse
                 </p>
@@ -25,7 +26,6 @@ export default {
     components: {
         ImageService
     },
-    name: 'app',
     data() {
         return {
             uploadedFiles: [],
@@ -55,13 +55,22 @@ export default {
             this.uploadedFiles = [];
             this.uploadError = null;
         },
-        save(formData) {
-            // upload data to the server
+        uploadImages(event) {
+            // handle file changes
+            let formData = new FormData();
+
+            formData.append('image', event.target.files[0]);
+
+            if (!event.target.files.length) return;
+
             this.currentStatus = STATUS_SAVING;
+
             ImageService
                 .postImage(formData)
-                .then(x => {
-                    this.uploadedFiles = [].concat(x);
+                .then(response => {
+
+                    ImageService.pushImageToSession(response.data.imageUrl)
+
                     this.currentStatus = STATUS_SUCCESS;
                 })
                 .catch(err => {

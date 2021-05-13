@@ -1,15 +1,24 @@
 <template>
     <div>
         <h1>See images</h1>
+        <div v-for="image in images">
+            image
+        </div>
     </div>
 </template>
 
 <script>
+import ImageService from "../services/ImageService";
+
 export default {
-name: "ImagesList"
+    data() {
+        return {
+            images: []
+        };
+    },
+    created() {
+        this.images = ImageService.getImages();
+    }
 }
 </script>
 
-<style scoped>
-
-</style>
