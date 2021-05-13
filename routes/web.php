@@ -14,4 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ImageController::class, 'index']);
+Route::get('/{any?}', function () {
+    return view('app');
+});

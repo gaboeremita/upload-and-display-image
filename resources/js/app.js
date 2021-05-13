@@ -1,7 +1,13 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+import VueRouter from "vue-router";
+import routes from "./routes";
+import Home from "./views/Home";
 
-const app = new Vue({
-    el: '#app',
-});
+Vue.use(VueRouter);
+
+new Vue({
+    router: new VueRouter(routes),
+    render: h => h(Home)
+}).$mount('#app')
