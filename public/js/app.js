@@ -1978,6 +1978,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 var STATUS_INITIAL = 0,
     STATUS_SAVING = 1,
@@ -1989,10 +1992,9 @@ var STATUS_INITIAL = 0,
   },
   data: function data() {
     return {
-      uploadedFiles: [],
       uploadError: null,
       currentStatus: null,
-      uploadFieldName: 'photos'
+      uploadFieldName: 'image'
     };
   },
   computed: {
@@ -2021,7 +2023,7 @@ var STATUS_INITIAL = 0,
 
       // handle file changes
       var formData = new FormData();
-      formData.append('image', event.target.files[0]);
+      formData.append(this.uploadFieldName, event.target.files[0]);
       if (!event.target.files.length) return;
       this.currentStatus = STATUS_SAVING;
       _services_ImageService__WEBPACK_IMPORTED_MODULE_0__.default.postImage(formData).then(function (response) {
@@ -2828,45 +2830,47 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm.isInitial || _vm.isSaving
-      ? _c(
-          "form",
-          { attrs: { enctype: "multipart/form-data", novalidate: "" } },
-          [
-            _c("h1", [_vm._v("Upload images")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "dropbox" }, [
-              _c("input", {
-                attrs: {
-                  type: "file",
-                  name: _vm.uploadFieldName,
-                  disabled: _vm.isSaving,
-                  accept: "image/*"
-                },
-                on: {
-                  change: function($event) {
-                    return _vm.uploadImages($event)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _vm.isInitial
-                ? _c("p", [
-                    _vm._v("\n                Drag your file(s) here to begin"),
-                    _c("br"),
-                    _vm._v(" or click to browse\n            ")
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.isSaving
-                ? _c("p", [
-                    _vm._v("\n                Uploading files...\n            ")
-                  ])
-                : _vm._e()
+    _c("form", { attrs: { enctype: "multipart/form-data", novalidate: "" } }, [
+      _c("h1", [_vm._v("Upload images")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "dropbox" }, [
+        _c("input", {
+          attrs: {
+            type: "file",
+            name: _vm.uploadFieldName,
+            disabled: _vm.isSaving,
+            accept: "image/*"
+          },
+          on: {
+            change: function($event) {
+              return _vm.uploadImages($event)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.isInitial
+          ? _c("p", [
+              _vm._v("\n                Drag your file(s) here to begin"),
+              _c("br"),
+              _vm._v(" or click to browse\n            ")
             ])
-          ]
-        )
-      : _vm._e()
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isSaving
+          ? _c("p", [
+              _vm._v("\n                Uploading files...\n            ")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isSuccess
+          ? _c("p", [
+              _vm._v(
+                "\n                Image uploaded successfully. Upload another one?\n            "
+              )
+            ])
+          : _vm._e()
+      ])
+    ])
   ])
 }
 var staticRenderFns = []

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+        <form enctype="multipart/form-data" novalidate>
             <h1>Upload images</h1>
             <div class="dropbox">
                 <input type="file" :name="uploadFieldName" :disabled="isSaving"
@@ -11,6 +11,9 @@
                 </p>
                 <p v-if="isSaving">
                     Uploading files...
+                </p>
+                <p v-if="isSuccess">
+                    Image uploaded successfully. Upload another one?
                 </p>
             </div>
         </form>
@@ -28,10 +31,9 @@ export default {
     },
     data() {
         return {
-            uploadedFiles: [],
             uploadError: null,
             currentStatus: null,
-            uploadFieldName: 'photos'
+            uploadFieldName: 'image'
         }
     },
     computed: {
@@ -59,7 +61,7 @@ export default {
             // handle file changes
             let formData = new FormData();
 
-            formData.append('image', event.target.files[0]);
+            formData.append(this.uploadFieldName, event.target.files[0]);
 
             if (!event.target.files.length) return;
 
