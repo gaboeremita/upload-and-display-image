@@ -30,7 +30,7 @@ class ImageController extends Controller
 
     public function store(Request $request) {
         $imageUrl = $request->input('image_url');
-        
+
         $this->interventionService->postImage($imageUrl);
 
         return response()->json('ok');
