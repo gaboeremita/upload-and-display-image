@@ -1,5 +1,5 @@
 import UploadImage from "./views/UploadImage";
-import ImagesList from "./components/ImagesList";
+import ImagesList from "./views/ImagesList";
 
 export default {
     mode: 'history',

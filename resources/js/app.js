@@ -3,7 +3,7 @@ require('./bootstrap');
 import Vue from 'vue';
 import VueRouter from "vue-router";
 import routes from "./routes";
-import Home from "./views/Home";
+import Home from "./Home";
 
 Vue.use(VueRouter);
 
