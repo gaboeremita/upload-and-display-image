@@ -18,7 +18,7 @@ export default {
         let imageUrls = this.getImagesUrl();
 
         if(imageUrls !== null) {
-            imageUrls.push(newUrl);
+            imageUrls.unshift(newUrl);
             sessionStorage.setItem('imagesUrl', JSON.stringify(imageUrls));
         } else {
             sessionStorage.setItem('imagesUrl', JSON.stringify([newUrl]));
