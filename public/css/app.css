@@ -10002,3 +10002,26 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.navbar .nav-link {
+  text-decoration: none;
+}
+
+.upload-image-section .dropbox {
+  cursor: pointer;
+  color: #212529;
+  min-height: 200px;
+  padding: 10px 10px;
+  position: relative;
+  background: #dee2e6;
+  outline-offset: -10px;
+  flex-direction: column;
+  outline: 2px dashed #f8f9fa;
+}
+.upload-image-section .dropbox:hover {
+  background: #adb5bd;
+}
+.upload-image-section .dropbox .paragraph {
+  font-size: 1.2em;
+  text-align: center;
+  padding: 50px 0;
+}

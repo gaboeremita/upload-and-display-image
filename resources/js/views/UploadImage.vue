@@ -1,18 +1,18 @@
 <template>
-    <div class="container">
+    <div class="d-flex justify-content-center upload-image-section">
         <form enctype="multipart/form-data" novalidate>
-            <h1>Upload images</h1>
-            <div class="dropbox">
+            <h1 class="h1">Upload images</h1>
+            <div class="dropbox p-4">
                 <input type="file" :name="uploadFieldName" :disabled="isSaving"
                        @change="uploadImages($event)"
                        accept="image/*">
-                <p v-if="isInitial">
+                <p class="paragraph" v-if="isInitial">
                     Drag your file(s) here to begin<br> or click to browse
                 </p>
-                <p v-if="isSaving">
+                <p class="paragraph" v-if="isSaving">
                     Uploading files...
                 </p>
-                <p v-if="isSuccess">
+                <p class="paragraph" v-if="isSuccess">
                     Image uploaded successfully. Upload another one?
                 </p>
             </div>
