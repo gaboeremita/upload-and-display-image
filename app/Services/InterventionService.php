@@ -6,7 +6,7 @@ use App\Services\Contracts\Imageable;
 
 class InterventionService implements Imageable
 {
-    
+
     private $remoteServerUrl;
 
     public function __construct()
