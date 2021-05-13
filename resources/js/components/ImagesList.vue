@@ -1,23 +1,26 @@
 <template>
     <div>
         <h1>See images</h1>
-        <div v-for="image in images">
-            image
-        </div>
+        <image-card v-for="imageUrl in imagesUrl" :imageUrl="imageUrl">
+        </image-card>
     </div>
 </template>
 
 <script>
 import ImageService from "../services/ImageService";
+import ImageCard from "./ImageCard";
 
 export default {
+    components: {
+        ImageCard
+    },
     data() {
         return {
-            images: []
+            imagesUrl: []
         };
     },
     created() {
-        this.images = ImageService.getImages();
+        this.imagesUrl = ImageService.getImagesUrl();
     }
 }
 </script>

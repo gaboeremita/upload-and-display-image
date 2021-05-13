@@ -7,7 +7,7 @@ const apiClient = axios.create({
 })
 
 export default {
-    getImages() {
+    getImagesUrl() {
        return JSON.parse(sessionStorage.getItem("imagesUrl"));
     },
     postImage(data) {
@@ -15,7 +15,7 @@ export default {
     },
     pushImageToSession(newUrl) {
 
-        let imageUrls = this.getImages();
+        let imageUrls = this.getImagesUrl();
 
         if(imageUrls !== null) {
             imageUrls.push(newUrl);
