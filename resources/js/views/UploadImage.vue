@@ -5,15 +5,20 @@
             <div class="dropbox p-4">
                 <input type="file" :name="uploadFieldName" :disabled="isSaving"
                        @change="uploadImages($event)"
-                       accept="image/*">
+                       accept="image/png">
                 <p class="paragraph" v-if="isInitial">
-                    Drag your file(s) here to begin<br> or click to browse
+                    Drag your file(s) here to begin<br> or click the button to browse
                 </p>
                 <p class="paragraph" v-if="isSaving">
                     Uploading files...
                 </p>
                 <p class="paragraph" v-if="isSuccess">
                     Image uploaded successfully. Upload another one?
+                </p>
+                <p class="paragraph text-danger" v-if="isFailed">
+                    An error occurred. Please try again.
+                    <br>
+                    Error: {{ uploadError }}
                 </p>
             </div>
         </form>
@@ -52,13 +57,12 @@ export default {
     },
     methods: {
         reset() {
-            // reset form to initial state
             this.currentStatus = STATUS_INITIAL;
             this.uploadedFiles = [];
             this.uploadError = null;
         },
         uploadImages(event) {
-            // handle file changes
+            this.reset();
             let formData = new FormData();
 
             formData.append(this.uploadFieldName, event.target.files[0]);
@@ -70,13 +74,11 @@ export default {
             ImageService
                 .postImage(formData)
                 .then(response => {
-
                     ImageService.pushImageToSession(response.data.imageUrl)
-
                     this.currentStatus = STATUS_SUCCESS;
                 })
                 .catch(err => {
-                    this.uploadError = err.response;
+                    this.uploadError = err.response.data.message;
                     this.currentStatus = STATUS_FAILED;
                 });
         }
@@ -84,6 +86,5 @@ export default {
     mounted() {
         this.reset();
     },
-
 }
 </script>

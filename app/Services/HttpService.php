@@ -32,8 +32,7 @@ class HttpService
 
         } catch (GuzzleException $e) {
             error_log($e->getMessage());
+            return $e;
         }
-
-        return false;
     }
 }

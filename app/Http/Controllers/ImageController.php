@@ -10,7 +10,7 @@ class ImageController extends Controller
     /**
      * @var HttpService
      */
-    private $interventionService;
+    private $httpService;
 
     /**
      * ImageController constructor.
@@ -18,10 +18,10 @@ class ImageController extends Controller
      */
     public function __construct(HttpService $httpService)
     {
-        $this->interventionService = $httpService;
+        $this->httpService = $httpService;
     }
 
-    public function __invoke(Request $request): array
+    public function __invoke(Request $request)
     {
         $request->validate([
             'image' => 'required|image|mimes:png',
@@ -30,10 +30,15 @@ class ImageController extends Controller
         if ($request->file('image')->isValid()) {
             $encodedImage = base64_encode(file_get_contents($request->file('image')));
 
-            $imageUrl = $this->interventionService->postImage($encodedImage);
+            try {
+                $imageUrl = $this->httpService->postImage($encodedImage);
 
-            return compact('imageUrl');
-
+                return response(compact('imageUrl'));
+            } catch(\Exception $e) {
+                return response(['message' => 'An unknown error occurred'], 500);
+            }
         }
+
+        return response(['message' => 'Invalid image'], 500);
     }
 }
