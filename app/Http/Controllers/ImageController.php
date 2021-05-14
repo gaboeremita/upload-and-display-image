@@ -24,21 +24,21 @@ class ImageController extends Controller
     public function __invoke(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:png',
+            'images.*' => 'required|image|mimes:png',
         ]);
 
-        if ($request->file('image')->isValid()) {
-            $encodedImage = base64_encode(file_get_contents($request->file('image')));
+        $images = $request->file('images');
+        $imagesArray = [];
 
-            try {
+        foreach ($images as $image) {
+
+            if($image->isValid()) {
+                $encodedImage = base64_encode(file_get_contents($image));
                 $imageUrl = $this->httpService->postImage($encodedImage);
-
-                return response(compact('imageUrl'));
-            } catch(\Exception $e) {
-                return response(['message' => 'An unknown error occurred'], 500);
+                $imagesArray[] = ['url' => $imageUrl, 'name' => $image->getClientOriginalName()];
             }
         }
 
-        return response(['message' => 'Invalid image'], 500);
+        return response(compact('imagesArray'));
     }
 }

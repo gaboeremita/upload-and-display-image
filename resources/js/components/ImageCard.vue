@@ -1,9 +1,9 @@
 <template>
     <div class="col-6 col-lg-4 d-flex" >
         <div class="card flex-fill">
-            <img class="card-img-top" :src="imageUrl" alt="Image">
+            <img class="card-img-top" :src="image.url" alt="Image">
             <div class="card-body">
-                <p class="card-text">Image name</p>
+                <p class="card-text">{{ image.name }}</p>
             </div>
         </div>
     </div>
@@ -11,6 +11,6 @@
 
 <script>
 export default {
-    props: ['imageUrl']
+    props: ['image']
 }
 </script>

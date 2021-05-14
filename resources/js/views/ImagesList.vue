@@ -1,9 +1,9 @@
 <template>
     <div>
         <h4 class="h4 mx-3 mb-2">See images</h4>
-        <div v-if="imagesUrl !== null" class="container">
+        <div v-if="images !== null" class="container">
             <div class="row">
-                <image-card v-for="(imageUrl, index) in imagesUrl" :key="index" :imageUrl="imageUrl">
+                <image-card v-for="(image, index) in images" :key="index" :image="image">
                 </image-card>
             </div>
         </div>
@@ -13,8 +13,6 @@
                     There are no images to see yet.
                 </small>
             </h3>
-            <h4 class="h4">
-            </h4>
         </div>
     </div>
 </template>
@@ -29,11 +27,11 @@ export default {
     },
     data() {
         return {
-            imagesUrl: null
+            images: null
         };
     },
     created() {
-        this.imagesUrl = ImageService.getImagesUrl();
+        this.images = ImageService.getImages();
     }
 }
 </script>

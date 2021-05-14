@@ -8,8 +8,8 @@
         <div class="card-body">
             <form enctype="multipart/form-data" novalidate>
                 <div>
-                    <input type="file" :name="uploadFieldName" :disabled="isSaving"
-                           @change="uploadImages($event)"
+                    <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
+                           @change="uploadImages($event.target.files); fileCount = $event.target.files.length"
                            accept="image/png"
                            class="btn btn-primary"
                     >
@@ -17,7 +17,7 @@
                         Drag your file(s) here to begin<br> or click the button to browse
                     </p>
                     <p class="card-text" v-if="isSaving">
-                        Uploading files...
+                        Uploading {{ fileCount }} files...
                     </p>
                     <p class="card-text" v-if="isSuccess">
                         Image uploaded successfully. Upload another one?
@@ -48,7 +48,7 @@ export default {
         return {
             uploadError: null,
             currentStatus: null,
-            uploadFieldName: 'image'
+            uploadFieldName: 'images[]'
         }
     },
     computed: {
@@ -71,26 +71,37 @@ export default {
             this.uploadedFiles = [];
             this.uploadError = null;
         },
-        uploadImages(event) {
-            this.reset();
-            let formData = new FormData();
-
-            formData.append(this.uploadFieldName, event.target.files[0]);
-
-            if (!event.target.files.length) return;
-
+        save(formData) {
             this.currentStatus = STATUS_SAVING;
 
             ImageService
                 .postImage(formData)
                 .then(response => {
-                    ImageService.pushImageToSession(response.data.imageUrl)
+                    ImageService.pushImagesToSession(response.data.imagesArray)
                     this.currentStatus = STATUS_SUCCESS;
                 })
                 .catch(err => {
                     this.uploadError = err.response.data.message;
                     this.currentStatus = STATUS_FAILED;
                 });
+
+        },
+        uploadImages(fileList) {
+            this.reset();
+
+            let formData = new FormData();
+
+            if (!fileList.length) return;
+
+            Array
+                .from(Array(fileList.length).keys())
+                .map(x => {
+                    formData.append(this.uploadFieldName, fileList[x], fileList[x].name);
+                });
+
+            this.currentStatus = STATUS_SAVING;
+
+            this.save(formData);
         }
     },
     mounted() {

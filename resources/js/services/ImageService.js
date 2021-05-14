@@ -7,21 +7,21 @@ const apiClient = axios.create({
 })
 
 export default {
-    getImagesUrl() {
-       return JSON.parse(sessionStorage.getItem("imagesUrl"));
+    getImages() {
+       return JSON.parse(sessionStorage.getItem("images"));
     },
     postImage(data) {
         return apiClient.post('/api/images', data);
     },
-    pushImageToSession(newUrl) {
+    pushImagesToSession(newImages) {
 
-        let imageUrls = this.getImagesUrl();
+        let images = this.getImages();
 
-        if(imageUrls !== null) {
-            imageUrls.unshift(newUrl);
-            sessionStorage.setItem('imagesUrl', JSON.stringify(imageUrls));
+        if(images !== null) {
+            images.unshift(...newImages);
+            sessionStorage.setItem('images', JSON.stringify(images));
         } else {
-            sessionStorage.setItem('imagesUrl', JSON.stringify([newUrl]));
+            sessionStorage.setItem('images', JSON.stringify(newImages));
         }
     }
 }
