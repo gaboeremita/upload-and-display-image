@@ -2,7 +2,7 @@
     <div class="card text-center">
         <div class="card-header mt-2">
             <h4 class="card-title">
-                Upload image
+                Upload images
             </h4>
         </div>
         <div class="card-body">
@@ -14,11 +14,11 @@
                            class="btn btn-primary"
                     >
                     <p class="card-text" v-if="isInitial">
-                        Drag your file(s) here to begin<br> or click the button to browse
+                        Drag your images(s) here to begin<br> or click the button to browse
                     </p>
                     <div v-else-if="isSaving" class="progress-container progress-primary">
                             <span class="progress-badge">
-                                Uploading {{ fileCount }} files...
+                                Uploading {{ fileCount }} images...
                             </span>
                         <div class="progress">
                             <div class="progress-bar progress-bar-warning" role="progressbar"
@@ -43,7 +43,7 @@
                     <div class="alert-icon">
                         <i class="now-ui-icons ui-2_like"></i>
                     </div>
-                    <strong>Image uploaded successfully!</strong> Upload another one?
+                    <strong>Images uploaded successfully!</strong> Upload another one?
                 </div>
             </div>
         </div>
