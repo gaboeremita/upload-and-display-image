@@ -16,21 +16,36 @@
                     <p class="card-text" v-if="isInitial">
                         Drag your file(s) here to begin<br> or click the button to browse
                     </p>
-                    <p class="card-text" v-if="isSaving">
-                        Uploading {{ fileCount }} files...
-                    </p>
-                    <p class="card-text" v-if="isSuccess">
-                        Image uploaded successfully. Upload another one?
-                    </p>
+                    <div v-else-if="isSaving" class="progress-container progress-primary">
+                            <span class="progress-badge">
+                                Uploading {{ fileCount }} files...
+                            </span>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-warning" role="progressbar"
+                                 :aria-valuenow="percentage" aria-valuemin="0" aria-valuemax="100"
+                                 :style="{ width: percentage + '%' }"
+                            >
+                                <span class="progress-value">{{ percentage }}%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
-        <div class="card-footer text-muted text-danger mb-2">
-            <p v-if="isFailed">
-                An error occurred. Please try again.
+        <div class="card-footer mb-2 d-flex justify-content-center">
+            <div v-if="isFailed" class="alert alert-danger" role="alert">
+                <strong>An error occurred. Please try again.</strong>
                 <br>
                 Error: {{ uploadError }}
-            </p>
+            </div>
+            <div v-else-if="isSuccess" class="alert alert-success" role="alert">
+                <div class="container">
+                    <div class="alert-icon">
+                        <i class="now-ui-icons ui-2_like"></i>
+                    </div>
+                    <strong>Image uploaded successfully!</strong> Upload another one?
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -41,11 +56,9 @@ import ImageService from "../services/ImageService";
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
 export default {
-    components: {
-        ImageService
-    },
     data() {
         return {
+            percentage: 0,
             uploadError: null,
             currentStatus: null,
             uploadFieldName: 'images[]'
@@ -67,6 +80,7 @@ export default {
     },
     methods: {
         reset() {
+            this.percentage = 0;
             this.currentStatus = STATUS_INITIAL;
             this.uploadedFiles = [];
             this.uploadError = null;
@@ -77,11 +91,17 @@ export default {
             ImageService
                 .postImage(formData)
                 .then(response => {
+                    this.increaseProgressPercentage(25);
+
                     ImageService.pushImagesToSession(response.data.imagesArray)
+                    this.increaseProgressPercentage(24);
+
                     this.currentStatus = STATUS_SUCCESS;
+                    this.percentage = 0;
                 })
                 .catch(err => {
                     this.uploadError = err.response.data.message;
+                    this.percentage = 0;
                     this.currentStatus = STATUS_FAILED;
                 });
 
@@ -89,9 +109,13 @@ export default {
         uploadImages(fileList) {
             this.reset();
 
+            this.currentStatus = STATUS_SAVING;
+
             let formData = new FormData();
 
             if (!fileList.length) return;
+
+            this.increaseProgressPercentage(25);
 
             Array
                 .from(Array(fileList.length).keys())
@@ -99,9 +123,12 @@ export default {
                     formData.append(this.uploadFieldName, fileList[x], fileList[x].name);
                 });
 
-            this.currentStatus = STATUS_SAVING;
+            this.increaseProgressPercentage(25);
 
             this.save(formData);
+        },
+        increaseProgressPercentage(quantity) {
+            this.percentage += quantity;
         }
     },
     mounted() {
