@@ -1,4 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
+    "/fonts/nucleo-license.md": "/fonts/nucleo-license.md",
+    "/fonts/nucleo-outline.eot": "/fonts/nucleo-outline.eot",
+    "/fonts/nucleo-outline.ttf": "/fonts/nucleo-outline.ttf",
+    "/fonts/nucleo-outline.woff": "/fonts/nucleo-outline.woff",
+    "/fonts/nucleo-outline.woff2": "/fonts/nucleo-outline.woff2",
     "/css/app.css": "/css/app.css"
 }

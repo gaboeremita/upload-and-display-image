@@ -1,16 +1,20 @@
 <template>
     <div>
-        <h1 class="h1 mb-2">See images</h1>
+        <h4 class="h4 mx-3 mb-2">See images</h4>
         <div v-if="imagesUrl !== null" class="container">
             <div class="row">
-                <image-card class="col-4 py-2 px-1" v-for="(imageUrl, index) in imagesUrl" :key="index" :imageUrl="imageUrl">
+                <image-card v-for="(imageUrl, index) in imagesUrl" :key="index" :imageUrl="imageUrl">
                 </image-card>
             </div>
         </div>
-        <div class="v-else">
-            <h3 class="h3">
-                There are no images to see yet.
+        <div v-else>
+            <h3>
+                <small class="text-muted">
+                    There are no images to see yet.
+                </small>
             </h3>
+            <h4 class="h4">
+            </h4>
         </div>
     </div>
 </template>

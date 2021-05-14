@@ -1,27 +1,37 @@
 <template>
-    <div class="d-flex justify-content-center upload-image-section">
-        <form enctype="multipart/form-data" novalidate>
-            <h1 class="h1">Upload images</h1>
-            <div class="dropbox p-4">
-                <input type="file" :name="uploadFieldName" :disabled="isSaving"
-                       @change="uploadImages($event)"
-                       accept="image/png">
-                <p class="paragraph" v-if="isInitial">
-                    Drag your file(s) here to begin<br> or click the button to browse
-                </p>
-                <p class="paragraph" v-if="isSaving">
-                    Uploading files...
-                </p>
-                <p class="paragraph" v-if="isSuccess">
-                    Image uploaded successfully. Upload another one?
-                </p>
-                <p class="paragraph text-danger" v-if="isFailed">
-                    An error occurred. Please try again.
-                    <br>
-                    Error: {{ uploadError }}
-                </p>
-            </div>
-        </form>
+    <div class="card text-center">
+        <div class="card-header mt-2">
+            <h4 class="card-title">
+                Upload image
+            </h4>
+        </div>
+        <div class="card-body">
+            <form enctype="multipart/form-data" novalidate>
+                <div>
+                    <input type="file" :name="uploadFieldName" :disabled="isSaving"
+                           @change="uploadImages($event)"
+                           accept="image/png"
+                           class="btn btn-primary"
+                    >
+                    <p class="card-text" v-if="isInitial">
+                        Drag your file(s) here to begin<br> or click the button to browse
+                    </p>
+                    <p class="card-text" v-if="isSaving">
+                        Uploading files...
+                    </p>
+                    <p class="card-text" v-if="isSuccess">
+                        Image uploaded successfully. Upload another one?
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted text-danger mb-2">
+            <p v-if="isFailed">
+                An error occurred. Please try again.
+                <br>
+                Error: {{ uploadError }}
+            </p>
+        </div>
     </div>
 </template>
 
